@@ -24,8 +24,13 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author irda2
  */
+
+/*Se crea la clase consultarUsuario siendo una de las clases que se utilizan para modificar la tabla usuarios de la BD
+  Esta clase consulta registros de dicha tabla
+*/
 @WebServlet(name = "consultarUsuario", urlPatterns = {"/consultarUsuario"})
 public class consultarUsuario extends HttpServlet {
+    //Se crea la conexion y se define dentro del constructor para que en la llamada del objeto cree la conexion a MySQL
     Connection cn;
     
     public consultarUsuario() throws SQLException, ClassNotFoundException {
@@ -42,14 +47,15 @@ public class consultarUsuario extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
+        //Lineas de codigo que se ejecutan en el request del Servlet
         response.setContentType("text/html;charset=UTF-8");
-        
         String correo = request.getParameter("correo");
         String contrasena = request.getParameter("contrasena");
         String nombre;
         int id;
-        ResultSet rs = readUser(cn,correo,contrasena);
+        ResultSet rs = readUser(cn,correo,contrasena);//Metodo definido para leer usuarios definido abajo
         
+        //Se obtienen todos los datos del result set
         while(rs.next()){
             id = rs.getInt("id");
             nombre = rs.getString("nombre");
@@ -70,16 +76,16 @@ public class consultarUsuario extends HttpServlet {
             out.println("</html>");
         }*/
     }
-    
+    //Metodo utilizado para leer usuarios de la DB
     public ResultSet readUser(Connection cn,String correo, String contrasena) throws SQLException{
-        ResultSet rs;
+        ResultSet rs; //Se crea un result set que sera la respuesta del metodo
         try{
-            PreparedStatement lectura;    
-            lectura = cn.prepareStatement("SELECT * FROM usuario WHERE correo=? AND contrasena=?");
+            PreparedStatement lectura; //Se utilizan Statements para realizar las consultas
+            lectura = cn.prepareStatement("SELECT * FROM usuario WHERE correo=? AND contrasena=?");//En las siguientes lineas se crea el query a ejecutar
             lectura.setString(1,correo);
             lectura.setString(2,contrasena);
             rs = lectura.executeQuery();
-        }catch(SQLException ex){
+        }catch(SQLException ex){ //Manejo de excepciones en cualquier error dentro de la consulta
             throw new SQLException(ex);
         }
         return rs;

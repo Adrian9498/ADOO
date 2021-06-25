@@ -10,13 +10,17 @@ package UserControll;
  * @author irda2
  */
 
-
+//Se crea la clase de usuario que  sera el objeto principal que se utilizara en los servlets
 public class Usuario {
+    
+    //Se crean sus atributos necesarios y principales para la creacion de objetos tipo Usuario
     public int id;
     private String nombre;
     private String correo;
     private String contrasena;
     
+    
+    //Los respectivos Getters and Setter para los atributos privados
     public String getNombre(){
         return this.nombre;
     }

@@ -9,11 +9,16 @@ package GraphControlls;
  *
  * @author irda2
  */
+
+//Se crea la clase de graficas que  sera el objeto principal que se utilizara en los servlets 
 public class Graficas {
+    
+    //Se crean sus atributos necesarios y principales para la creacion de objetos tipo Graficas
     public int id;
     private String ecuacion;
     private String nombre;
     
+    //Los respectivos Getters and Setter para los atributos privados
     public String getEcuacion(){
         return this.ecuacion;
     }

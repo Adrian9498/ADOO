@@ -23,8 +23,14 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author irda2
  */
+
+/*Se crea la clase eliminarUsuario siendo una de las clases que se utilizan para modificar la tabla usuarios de la BD
+  Esta clase elimina registros de dicha tabla
+*/
 @WebServlet(name = "eliminarUsuario", urlPatterns = {"/eliminarUsuario"})
 public class eliminarUsuario extends HttpServlet {
+    
+    //Se crea la conexion y se define dentro del constructor para que en la llamada del objeto cree la conexion a MySQL
     Connection cn;
 
     public eliminarUsuario() throws SQLException, ClassNotFoundException {
@@ -42,11 +48,10 @@ public class eliminarUsuario extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
-        
+        //Lineas de codigo que se ejecutan en el request del Servlet
         String correo = request.getParameter("correo");
         String contrasena = request.getParameter("contrasena");
-        
-        deleteUser(cn,correo,contrasena);
+        deleteUser(cn,correo,contrasena); //Metodo definido para eliminar usuarios definido abajo
         /*try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. 
             out.println("<!DOCTYPE html>");
@@ -60,16 +65,16 @@ public class eliminarUsuario extends HttpServlet {
             out.println("</html>");
         }*/
     }
-    
+    //Metodo utilizado para eliminar usuarios de la DB
     public void deleteUser(Connection cn,String correo,String contrasena) throws SQLException{
     
         try{
-            PreparedStatement eliminar;
-            eliminar = cn.prepareStatement("DELETE FROM usuario WHERE correo=? AND contrasena=?");
+            PreparedStatement eliminar; //Se utilizan Statements para realizar las consultas
+            eliminar = cn.prepareStatement("DELETE FROM usuario WHERE correo=? AND contrasena=?"); //En las siguientes lineas se crea el query a ejecutar
             eliminar.setString(1,correo);
             eliminar.setString(2,contrasena);
-            eliminar.execute();
-        }catch(SQLException ex){
+            eliminar.execute(); //Se ejecuta el Query
+        }catch(SQLException ex){ //Manejo de excepciones en cualquier error dentro de la consulta
             throw new SQLException(ex);
         }
     

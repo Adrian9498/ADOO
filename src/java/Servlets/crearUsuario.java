@@ -24,8 +24,13 @@ import java.util.logging.Logger;
  *
  * @author irda2
  */
+
+/*Se crea la clase consultarUsuario siendo una de las clases que se utilizan para modificar la tabla usuarios de la BD
+  Esta clase crea registros de dicha tabla
+*/
 @WebServlet(name = "crearUsuario", urlPatterns = {"/crearUsuario"})
 public class crearUsuario extends HttpServlet {
+    //Se crea la conexion y se define dentro del constructor para que en la llamada del objeto cree la conexion a MySQL
     Connection cn;
     
     public crearUsuario() throws SQLException, ClassNotFoundException {
@@ -34,12 +39,12 @@ public class crearUsuario extends HttpServlet {
    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
+        //Lineas de codigo que se ejecutan en el request del Servlet
         response.setContentType("text/html;charset=UTF-8");
-        
         String nombre = request.getParameter("nombre");
         String correo = request.getParameter("correo");
         String contrasena = request.getParameter("contrasena");
-        
+         //Metodo definido para crear usuarios definido abajo
         createUser(cn,nombre,correo,contrasena);
         /*try (PrintWriter out = response.getWriter()) {
             /*TODO output your page here. You may use following sample code. 
@@ -54,10 +59,10 @@ public class crearUsuario extends HttpServlet {
             out.println("</html>");
         }*/
     }
-    
+    //Metodo utilizado para crear usuarios de la DB
     public void createUser(Connection cn,String nombre,String correo,String contrasena) throws SQLException{
-        Usuario us = new Usuario();
-        us.setNombre(nombre);
+        Usuario us = new Usuario(); //Se crea objeto usuario
+        us.setNombre(nombre);//Se agregan sus atributos
         us.setCorreo(correo);
         us.setContrasena(contrasena);
         try{
@@ -67,8 +72,8 @@ public class crearUsuario extends HttpServlet {
             registro.setString(1,us.getNombre());
             registro.setString(2,us.getCorreo());
             registro.setString(3, us.getContrasena());
-            registro.executeUpdate();
-        }catch(SQLException ex){
+            registro.executeUpdate();//Se ejecuta el Query
+        }catch(SQLException ex){//Manejo de excepciones en cualquier error dentro de la consulta
             throw new SQLException(ex);
         }
     }

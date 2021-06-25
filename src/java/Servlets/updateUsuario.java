@@ -24,9 +24,14 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author irda2
  */
+
+/*Se crea la clase updateUsuario siendo una de las clases que se utilizan para modificar la tabla usuarios de la BD
+  Esta clase actualiza registros de dicha tabla
+*/
 @WebServlet(name = "updateUsuario", urlPatterns = {"/updateUsuario"})
 public class updateUsuario extends HttpServlet {
-Connection cn;
+    //Se crea la conexion y se define dentro del constructor para que en la llamada del objeto cree la conexion a MySQL
+    Connection cn;
     
     public updateUsuario() throws SQLException, ClassNotFoundException {
         this.cn = SqlConnection.getSqlConnection();
@@ -42,6 +47,8 @@ Connection cn;
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
+        
+        //Lineas de codigo que se ejecutan en el request del Servlet
         response.setContentType("text/html;charset=UTF-8");
         String correo = request.getParameter("correo");
         String contrasena = request.getParameter("contrasena");
@@ -49,7 +56,7 @@ Connection cn;
         String correoN = request.getParameter("correoN");
         String contrasenaN = request.getParameter("contrasenaN");
         
-        updateUser(cn,nombreN,correoN,contrasenaN,correo,contrasena);
+        updateUser(cn,nombreN,correoN,contrasenaN,correo,contrasena); //Metodo definido para eliminar usuarios definido abajo
         /*try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. 
             out.println("<!DOCTYPE html>");
@@ -63,23 +70,23 @@ Connection cn;
             out.println("</html>");
         }*/
     }
-    
+    //Metodo utilizado para actualizar usuarios de la DB
     public void updateUser(Connection cn,String nombreN,String correoN,String contrasenaN,String correo,String contrasena) throws SQLException{
-        Usuario us = new Usuario();
-        us.setNombre(nombreN);
+        Usuario us = new Usuario(); //Se crea objeto usuario
+        us.setNombre(nombreN); //Se agregan sus atributos
         us.setCorreo(correoN);
         us.setContrasena(contrasenaN);
         
         try{
-            PreparedStatement actualizacion;
-            actualizacion = cn.prepareStatement("UPDATE usuario SET nombre=?, correo=?,contrasena=? WHERE correo=? AND contrasena=?");
-            actualizacion.setString(1,us.getNombre());
+            PreparedStatement actualizacion;//Se utilizan Statements para realizar las consultas
+            actualizacion = cn.prepareStatement("UPDATE usuario SET nombre=?, correo=?,contrasena=? WHERE correo=? AND contrasena=?");//En las siguientes lineas se crea el query a ejecutar
+            actualizacion.setString(1,us.getNombre());//Se consume el objeto tipo usuario
             actualizacion.setString(2,us.getCorreo());
             actualizacion.setString(3,us.getContrasena());
             actualizacion.setString(4,correo);
             actualizacion.setString(5,contrasena);
-            actualizacion.executeUpdate();
-        }catch(SQLException ex){
+            actualizacion.executeUpdate(); //Se ejecuta el Query
+        }catch(SQLException ex){ //Manejo de excepciones en cualquier error dentro de la consulta
             throw new SQLException(ex);
         }
     }
