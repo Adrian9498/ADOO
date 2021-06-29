@@ -12,72 +12,89 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import GraphControlls.*;
 import Services.SqlConnection;
-import UserControll.Usuario;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.servlet.RequestDispatcher;
-
 /**
  *
  * @author irda2
  */
-
-/*Se crea la clase consultarUsuario siendo una de las clases que se utilizan para modificar la tabla usuarios de la BD
-  Esta clase crea registros de dicha tabla
-*/
-@WebServlet(name = "crearUsuario", urlPatterns = {"/crearUsuario"})
-public class crearUsuario extends HttpServlet {
-    //Se crea la conexion y se define dentro del constructor para que en la llamada del objeto cree la conexion a MySQL
+@WebServlet(name = "crearGrafica", urlPatterns = {"/crearGrafica"})
+public class crearGrafica extends HttpServlet {
     Connection cn;
-    
-    public crearUsuario() throws SQLException, ClassNotFoundException {
+    int tipo;
+    public crearGrafica() throws SQLException, ClassNotFoundException {
         this.cn = SqlConnection.getSqlConnection();
     }
-   
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
-        //Lineas de codigo que se ejecutan en el request del Servlet
-        
         response.setContentType("text/html;charset=UTF-8");
+        String ecuacion;
         String nombre = request.getParameter("nombre");
-        String correo = request.getParameter("correo");
-        String contrasena = request.getParameter("contrasena");
-         //Metodo definido para crear usuarios definido abajo
-        createUser(cn,nombre,correo,contrasena);
+        float m = Float.parseFloat(request.getParameter("m"));
+        float b = Float.parseFloat(request.getParameter("b"));
+        tipo = Integer.parseInt(request.getParameter("tipo"));
+        if(tipo == 1){
+            SlopeY sy = new SlopeY();
+            sy.setM(m);
+            sy.setB(b);
+            ecuacion = "y="+sy.getM()+"x+"+sy.getB();
+            sy.setEcuacion(ecuacion);
+            sy.setNombre(nombre);
+            createGraph(cn,sy);
+        }else{
+            Estandar es = new Estandar();
+            es.setM(m);
+            es.setB(b);
+            ecuacion = es.getM()+"x+"+es.getB();
+            es.setEcuacion(ecuacion);
+            es.setNombre(nombre);
+            createGraph(cn,es);
+        }
         
-         
         /*try (PrintWriter out = response.getWriter()) {
-            /*TODO output your page here. You may use following sample code. 
+            /* TODO output your page here. You may use following sample code. 
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet crearUsuario</title>");            
+            out.println("<title>Servlet crearGrafica</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet crearUsuario at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet crearGrafica at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }*/
     }
-    //Metodo utilizado para crear usuarios de la DB
-    public void createUser(Connection cn,String nombre,String correo,String contrasena) throws SQLException{
-        Usuario us = new Usuario(); //Se crea objeto usuario
-        us.setNombre(nombre);//Se agregan sus atributos
-        us.setCorreo(correo);
-        us.setContrasena(contrasena);
+    
+    public void createGraph(Connection cn,SlopeY sy) throws SQLException{
         try{
-            
             PreparedStatement registro;
-            registro = cn.prepareStatement("INSERT INTO usuario(nombre,correo,contrasena)VALUES(?,?,?)");
-            registro.setString(1,us.getNombre());
-            registro.setString(2,us.getCorreo());
-            registro.setString(3, us.getContrasena());
-            registro.executeUpdate();//Se ejecuta el Query
-        }catch(SQLException ex){//Manejo de excepciones en cualquier error dentro de la consulta
+            registro = cn.prepareStatement("INSERT INTO graficas(ecuacion,nombre,m,b)VALUES(?,?,?,?)");
+            registro.setString(1, sy.getEcuacion());
+            registro.setString(2, sy.getNombre());
+            registro.setString(3,String.valueOf(sy.getM()));
+            registro.setString(4,String.valueOf(sy.getB()));
+            registro.executeUpdate();
+        }catch(SQLException ex){
+            throw new SQLException(ex);
+        }
+    }
+    
+    public void createGraph(Connection cn,Estandar sy) throws SQLException{
+        try{
+            PreparedStatement registro;
+            registro = cn.prepareStatement("INSERT INTO graficas(ecuacion,nombre,m,b)VALUES(?,?,?,?)");
+            registro.setString(1, sy.getEcuacion());
+            registro.setString(2, sy.getNombre());
+            registro.setString(3,String.valueOf(sy.getM()));
+            registro.setString(4,String.valueOf(sy.getB()));
+            registro.executeUpdate();
+        }catch(SQLException ex){
             throw new SQLException(ex);
         }
     }
@@ -97,7 +114,7 @@ public class crearUsuario extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (SQLException ex) {
-            Logger.getLogger(crearUsuario.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(crearGrafica.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -115,7 +132,7 @@ public class crearUsuario extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (SQLException ex) {
-            Logger.getLogger(crearUsuario.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(crearGrafica.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

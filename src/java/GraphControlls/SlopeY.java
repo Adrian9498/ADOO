@@ -31,7 +31,7 @@ public class SlopeY extends Graficas{
         this.m = m;
     }
     
-    public void setB(){
+    public void setB(float b){
         this.b=b;
     }
 }

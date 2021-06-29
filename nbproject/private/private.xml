@@ -3,15 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/irda2/Documents/NetBeansProjects/pruebaReactJava/src/java/UserControll/Usuario.java</file>
-            <file>file:/C:/Users/irda2/Documents/NetBeansProjects/pruebaReactJava/src/java/Services/SqlConnection.java</file>
-            <file>file:/C:/Users/irda2/Documents/NetBeansProjects/pruebaReactJava/src/java/Servlets/updateUsuario.java</file>
-            <file>file:/C:/Users/irda2/Documents/NetBeansProjects/pruebaReactJava/src/java/GraphControlls/Graficas.java</file>
-            <file>file:/C:/Users/irda2/Documents/NetBeansProjects/pruebaReactJava/src/java/Servlets/eliminarUsuario.java</file>
+            <file>file:/C:/Users/irda2/Documents/NetBeansProjects/pruebaReactJava/src/java/Servlets/crearGrafica.java</file>
             <file>file:/C:/Users/irda2/Documents/NetBeansProjects/pruebaReactJava/src/java/Servlets/consultarUsuario.java</file>
             <file>file:/C:/Users/irda2/Documents/NetBeansProjects/pruebaReactJava/src/java/Servlets/crearUsuario.java</file>
-            <file>file:/C:/Users/irda2/Documents/NetBeansProjects/pruebaReactJava/src/java/GraphControlls/Estandar.java</file>
-            <file>file:/C:/Users/irda2/Documents/NetBeansProjects/pruebaReactJava/src/java/GraphControlls/SlopeY.java</file>
+            <file>file:/C:/Users/irda2/Documents/NetBeansProjects/pruebaReactJava/src/java/Services/Login.java</file>
         </group>
     </open-files>
 </project-private>
